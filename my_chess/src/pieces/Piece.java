@@ -18,7 +18,7 @@ public class Piece {
     BufferedImage sheet;
     {
         try {
-            sheet = ImageIO.read(ClassLoader.getSystemResourceAsStream("chess.png"));
+            sheet = ImageIO.read(ClassLoader.getSystemResourceAsStream("resources/chess.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -29,5 +29,9 @@ public class Piece {
     Board board;
     public Piece(Board board) {
         this.board = board;
+    }
+
+    public void paint(Graphics2D g2d) {
+        g2d.drawImage(sprite, xPos, yPos, null);
     }
 }
