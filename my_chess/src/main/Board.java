@@ -14,11 +14,54 @@ public class Board extends JPanel {
 
     ArrayList<Piece> pieceList = new ArrayList<>();
 
+    public Piece selectedPiece;
+
+    public Input input = new Input(this);
+
     public Board() {
+        this.addMouseListener(input);
+        this.addMouseMotionListener(input);
         this.setPreferredSize((new Dimension(cols*titleSize, rows*titleSize)));
     }
 
 
+    public Piece getPiece(int col, int row){
+        for(Piece piece : pieceList) {
+            if(piece.col == col && piece.row == row) {
+                return piece;
+            }
+        }
+
+        return null;
+    }
+
+    public boolean isValidMove(Move move) {
+        if(sameTeam(move.piece, move.capture)) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean sameTeam(Piece p1, Piece p2) {
+        if(p1 == null || p2 == null) {
+            return false;
+        }
+        return p1.isWhite == p2.isWhite;
+    }
+
+    public void makeMove(Move move) {
+        move.piece.col = move.newCol;
+        move.piece.row = move.newRow;
+        move.piece.xPos = move.newCol * titleSize;
+        move.piece.yPos = move.newRow * titleSize;
+
+
+        capture(move);
+    }
+
+    public void capture(Move move) {
+        pieceList.remove(move.capture);
+    }
     public void addPieces() {
 
         pieceList.add(new King(this, 4, 0, false));
@@ -59,12 +102,13 @@ public class Board extends JPanel {
         pieceList.add(new Paw(this, 7, 6, true));
 
     }
+
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 
         for(int r = 0; r < rows; ++r)
             for(int c = 0; c < cols; ++c) {
-                g2d.setColor((r+c) % 2 == 0 ? new Color(107, 86, 86) : new Color(51, 42, 42));
+                g2d.setColor((r+c) % 2 == 0 ? new Color(227, 190, 151) : new Color(152, 98, 52));
                 g2d.fillRect(c*titleSize, r*titleSize, titleSize, titleSize);
             }
 
