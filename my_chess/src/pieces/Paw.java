@@ -18,4 +18,11 @@ public class Paw extends Piece {
         this.sprite = sheet.getSubimage(5 * sheetScale, isWhite ? 0 : sheetScale, sheetScale, sheetScale)
                 .getScaledInstance(board.titleSize, board.titleSize, BufferedImage.SCALE_SMOOTH);
     }
+
+    public boolean isValidMovement(int col, int row) {
+        if(itsFirstMove) {
+            return (col == this.col && (1 == Math.abs(this.row - row) || 2 == Math.abs(this.row - row)));
+        } else
+            return isWhite ? col == this.col && (1 == (this.row - row)) : col == this.col && (-1 == (this.row - row));
+    }
 }
